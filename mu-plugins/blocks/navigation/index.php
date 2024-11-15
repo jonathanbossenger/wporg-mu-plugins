@@ -148,7 +148,7 @@ function render_menu_item( $item ) {
 
 		$output .= sprintf(
 			$block_code,
-			esc_html( $item['label'] ),
+			wp_kses_post( $item['label'] ),
 			esc_url( $item['url'], ),
 			isset( $item['id'] ) ? intval( $item['id'] ) : '',
 			isset( $item['className'] ) ? esc_attr( $item['className'] ) : '',
