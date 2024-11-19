@@ -2,7 +2,6 @@ let containers;
 let main;
 let footer;
 let adminBarHeight;
-let globalNavHeight;
 const scrollHandlers = [];
 
 /**
@@ -46,7 +45,7 @@ function createScrollHandler( container ) {
 
 		// Toggle the fixed position based on whether main has reached the local nav.
 		// This assumes that main and the sidebar are top aligned.
-		const shouldFix = mainTop <= globalNavHeight + localNavHeight;
+		const shouldFix = mainTop <= localNavHeight + adminBarHeight;
 		container.classList.toggle( 'is-fixed-sidebar', shouldFix );
 
 		// If the sidebar is fixed and the footer is visible in the viewport, reduce the height to stop overlap.
@@ -72,7 +71,6 @@ function onResize() {
 		window.getComputedStyle( document.documentElement ).getPropertyValue( 'margin-top' ),
 		10
 	);
-	globalNavHeight = getCustomPropValue( '--wp-global-header-height' ) || 90;
 
 	containers.forEach( ( container ) => {
 		// Toggle the floating class based on the configured breakpoint.
@@ -88,10 +86,14 @@ function onResize() {
 	scrollHandlers.forEach( ( handler ) => handler() );
 }
 
+/**
+ * Initialize the sidebar container.
+ * Three elements are required: main, a sidebar container (or multiple), and a footer.
+ */
 function init() {
 	main = document.querySelector( 'main' );
 	containers = document.querySelectorAll( '.wp-block-wporg-sidebar-container' );
-	footer = document.querySelector( 'footer.wp-block-template-part' );
+	footer = document.querySelector( '.wporg-footer' );
 
 	if ( main && containers.length && footer ) {
 		containers.forEach( ( container ) => {
