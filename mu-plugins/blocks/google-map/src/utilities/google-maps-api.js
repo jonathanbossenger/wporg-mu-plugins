@@ -83,7 +83,7 @@ export function combineDuplicateLocations( rawMarkers ) {
  */
 export function assignMarkerReferences( map, maps, infoWindow, wpEvents, rawIcon, blockStyle ) {
 	const icon = {
-		url: rawIcon.imagesDirUrl + `/map-marker-${ blockStyle }.svg`,
+		url: rawIcon.imagesDirUrl + `/map-marker-${ blockStyle }.svg?v=2`,
 		size: new maps.Size( rawIcon.markerHeight, rawIcon.markerWidth ),
 		anchor: new maps.Point( 34, rawIcon.markerWidth / 2 ),
 		scaledSize: new maps.Size( rawIcon.markerHeight / 2, rawIcon.markerWidth / 2 ),
@@ -148,7 +148,7 @@ function openInfoWindow( infoWindow, map, markerObject, rawMarker ) {
  */
 export function clusterMarkers( map, maps, markers, rawIcon, blockStyle ) {
 	const clusterIcon = {
-		url: rawIcon.imagesDirUrl + `/cluster-background-${ blockStyle }.svg`,
+		url: rawIcon.imagesDirUrl + `/cluster-background-${ blockStyle }.svg?v=2`,
 		size: new maps.Size( rawIcon.clusterHeight, rawIcon.clusterWidth ),
 		anchor: new maps.Point( rawIcon.clusterHeight, rawIcon.clusterWidth ),
 		scaledSize: new maps.Size( rawIcon.clusterHeight, rawIcon.clusterWidth ),
