@@ -106,13 +106,16 @@ function init() {
 			// When the sidebar container adjacent to the main element (usually the chapter list)
 			// is taller than the main element, a glitch occurs when scrolling past the point where
 			// the sidebar becomes fixed, because the main element height depends on the sidebar container
-			// height. To avoid this, we observe the height of this container when it is not fixed, and
-			// set the min-height of the main element to match the container height.
+			// height. To avoid this, we observe the height of this container when it is floating and
+			// not fixed, and set the min-height of the main element to match the container height.
 			const isSibling = container.previousElementSibling === main || container.nextElementSibling === main;
 			if ( 'ResizeObserver' in window && isSibling ) {
 				const resizeObserver = new ResizeObserver( ( entries ) => {
 					for ( const entry of entries ) {
-						if ( ! container.classList.contains( 'is-fixed-sidebar' ) ) {
+						if (
+							container.classList.contains( 'is-floating-sidebar' ) &&
+							! container.classList.contains( 'is-fixed-sidebar' )
+						) {
 							const containerHeight = entry.contentRect.height;
 
 							if ( containerHeight ) {
