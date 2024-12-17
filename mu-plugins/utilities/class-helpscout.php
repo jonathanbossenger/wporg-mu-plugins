@@ -15,12 +15,14 @@ class HelpScout {
 	 *
 	 * @var int
 	 */
-	public $timeout = 15;
+	public $timeout = 30;
 
 	public    $name           = '';
 	protected $app_id         = '';
 	protected $app_secret     = '';
 	protected $webhook_secret = '';
+
+	public $last_api_request = false;
 
 	/**
 	 * Fetch an instance of the HelpScout API.
@@ -42,11 +44,6 @@ class HelpScout {
 			$app_id         = HELPSCOUT_APP_ID;
 			$secret         = HELPSCOUT_APP_SECRET;
 			$webhook_secret = HELPSCOUT_WEBHOOK_SECRET_KEY;
-		} elseif ( 'foundation' === $app_id && defined( 'HELPSCOUT_FOUNDATION_APP_ID' ) ) {
-			$name           = 'foundation';
-			$app_id         = HELPSCOUT_FOUNDATION_APP_ID;
-			$secret         = HELPSCOUT_FOUNDATION_APP_SECRET;
-			$webhook_secret = HELPSCOUT_FOUNDATION_WEBHOOK_SECRET_KEY;
 		}
 
 		$this->name           = $name;
@@ -178,7 +175,7 @@ class HelpScout {
 			$body                    = wp_json_encode( $args );
 		}
 
-		$request = wp_remote_request(
+		$this->last_api_request = wp_remote_request(
 			$url,
 			array(
 				'method'  => $method,
@@ -188,7 +185,7 @@ class HelpScout {
 			)
 		);
 
-		return json_decode( wp_remote_retrieve_body( $request ) );
+		return json_decode( wp_remote_retrieve_body( $this->last_api_request ) );
 	}
 
 	/**
