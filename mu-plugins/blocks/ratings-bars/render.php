@@ -1,6 +1,6 @@
 <?php
 
-$current_post_id = $block->context['postId'];
+$current_post_id = $block->context['postId'] ?? 0;
 if ( ! $current_post_id ) {
 	return;
 }
