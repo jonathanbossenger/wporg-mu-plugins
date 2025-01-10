@@ -23,14 +23,6 @@ const PLUGINS = [
 		'from'  => 'gutenberg/gutenberg.php',
 		'to'    => 'gutenberg-17.9/gutenberg.php',
 	],
-	[
-		// 2025-01-10: Filtered and injected post content is truncated,
-		// fall back to 19.9 everywhere.
-		// See https://github.com/WordPress/gutenberg/issues/68605.
-		'check' => 'gutenberg/gutenberg.php',
-		'from'  => 'gutenberg/gutenberg.php',
-		'to'    => 'gutenberg-19.9/gutenberg.php',
-	],
 ];
 
 /**
