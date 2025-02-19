@@ -18,6 +18,9 @@ add_filter( 'jetpack_active_modules', __NAMESPACE__ . '\activate_jetpack_blocks'
  * @return string[]
  */
 function available_jetpack_blocks( $modules, $min_version ) {
+	if ( ! defined( 'JETPACK__VERSION' ) || version_compare( JETPACK__VERSION, '13.8', '<=' ) ) {
+		return $modules;
+	}
 	if ( ! isset( $modules['blocks'] ) ) {
 		$modules['blocks'] = $min_version;
 	}
