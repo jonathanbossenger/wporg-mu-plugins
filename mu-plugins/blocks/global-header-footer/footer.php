@@ -163,7 +163,7 @@ $code_is_poetry_src = isset( $attributes['textColor'] ) && str_contains( $attrib
 
 	<?php if ( str_starts_with( get_locale(), 'en_' ) ) : ?>
 		<!-- Use an image so it can have the MrsEaves font. -->
-		<!-- wp:image {"width":188,"height":13,"className":"global-footer__code_is_poetry"} -->
+		<!-- wp:image {"lightbox":{"enabled":false},"width":188,"height":13,"className":"global-footer__code_is_poetry"} -->
 		<figure class="wp-block-image is-resized global-footer__code_is_poetry">
 			<img
 				src="<?php echo esc_url( $code_is_poetry_src ); ?>"
