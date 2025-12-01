@@ -529,6 +529,11 @@ function get_global_menu_items() {
 					'type'  => 'custom',
 				),
 				array(
+					'title' => esc_html_x( 'Education', 'Menu item title', 'wporg' ),
+					'url'   => 'https://wordpress.org/education/',
+					'type'  => 'custom',
+				),
+				array(
 					'title' => esc_html_x( 'Photo Directory', 'Menu item title', 'wporg' ),
 					'url'   => 'https://wordpress.org/photos/',
 					'type'  => 'custom',
@@ -541,11 +546,6 @@ function get_global_menu_items() {
 				array(
 					'title' => esc_html_x( 'Events', 'Menu item title', 'wporg' ),
 					'url'   => 'https://events.wordpress.org/',
-					'type'  => 'custom',
-				),
-				array(
-					'title' => esc_html_x( 'Education', 'Menu item title', 'wporg' ),
-					'url'   => 'https://wordpress.org/education/',
 					'type'  => 'custom',
 				),
 				array(
