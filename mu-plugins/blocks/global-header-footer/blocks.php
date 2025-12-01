@@ -544,6 +544,11 @@ function get_global_menu_items() {
 					'type'  => 'custom',
 				),
 				array(
+					'title' => esc_html_x( 'Education', 'Menu item title', 'wporg' ),
+					'url'   => 'https://wordpress.org/education/',
+					'type'  => 'custom',
+				),
+				array(
 					'title' => esc_html_x( 'Job Board ↗︎', 'Menu item title', 'wporg' ),
 					'url'   => 'https://jobs.wordpress.net/',
 					'type'  => 'custom',
