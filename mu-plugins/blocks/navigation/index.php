@@ -102,6 +102,24 @@ function get_menu_content( $menu_slug ) {
 }
 
 /**
+ * JSON-escape a label for safe insertion into block comment JSON.
+ *
+ * Sanitizes HTML and then JSON-escapes the result so it can be safely
+ * inserted into a JSON string within a block comment.
+ *
+ * @param string $label The label to escape.
+ * @return string The JSON-escaped label.
+ */
+function json_escape_label( $label ) {
+	// Sanitize HTML to remove unsafe tags.
+	$sanitized = wp_kses_post( $label );
+	// JSON-encode just the value.
+	$json_encoded = wp_json_encode( $sanitized, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+	// Strip quotes added by wp_json_encode since we're inserting into an already-quoted JSON string.
+	return substr( $json_encoded, 1, -1 );
+}
+
+/**
  * Render an individual navigation item, to support recursively building submenus.
  *
  * @param array $item
@@ -114,7 +132,7 @@ function render_menu_item( $item ) {
 	if ( isset( $item['submenu'] ) ) {
 		$output = sprintf(
 			'<!-- wp:navigation-submenu {"label":"%1$s","url":"#","kind":"custom","className":"%2$s"} -->',
-			$item['label'],
+			json_escape_label( $item['label'] ),
 			isset( $item['className'] ) ? esc_attr( $item['className'] ) : '',
 		);
 
@@ -148,7 +166,7 @@ function render_menu_item( $item ) {
 
 		$output .= sprintf(
 			$block_code,
-			wp_kses_post( $item['label'] ),
+			json_escape_label( $item['label'] ),
 			esc_url( $item['url'], ),
 			isset( $item['id'] ) ? intval( $item['id'] ) : '',
 			isset( $item['className'] ) ? esc_attr( $item['className'] ) : '',
