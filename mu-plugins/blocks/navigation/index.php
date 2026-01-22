@@ -102,24 +102,6 @@ function get_menu_content( $menu_slug ) {
 }
 
 /**
- * JSON-escape a label for safe insertion into block comment JSON.
- *
- * Sanitizes HTML and then JSON-escapes the result so it can be safely
- * inserted into a JSON string within a block comment.
- *
- * @param string $label The label to escape.
- * @return string The JSON-escaped label.
- */
-function json_escape_label( $label ) {
-	// Sanitize HTML to remove unsafe tags.
-	$sanitized = wp_kses_post( $label );
-	// JSON-encode just the value.
-	$json_encoded = wp_json_encode( $sanitized, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
-	// Strip quotes added by wp_json_encode since we're inserting into an already-quoted JSON string.
-	return substr( $json_encoded, 1, -1 );
-}
-
-/**
  * Render an individual navigation item, to support recursively building submenus.
  *
  * @param array $item
@@ -128,49 +110,60 @@ function json_escape_label( $label ) {
  */
 function render_menu_item( $item ) {
 	$output = '';
+	$label  = $item['label'] ?? '';
+	$kind   = 'custom';
 
 	if ( isset( $item['submenu'] ) ) {
-		$output = sprintf(
-			'<!-- wp:navigation-submenu {"label":"%1$s","url":"#","kind":"custom","className":"%2$s"} -->',
-			json_escape_label( $item['label'] ),
-			isset( $item['className'] ) ? esc_attr( $item['className'] ) : '',
-		);
+		$attributes = [
+			'className' => $item['className'] ?? '',
+			'kind'      => $kind,
+			'label'     => wp_kses_post( $label ),
+			'url'       => '#',
+		];
+
+		$output = '<!-- wp:navigation-submenu ' . serialize_block_attributes( $attributes ) . ' -->';
 
 		foreach ( $item['submenu'] as $submenu_item ) {
-			$output .= render_menu_item( $submenu_item, false );
+			$output .= render_menu_item( $submenu_item );
 		}
 
 		$output .= '<!-- /wp:navigation-submenu -->';
 	} else {
-		$block_code = '<!-- wp:navigation-link {"label":"%1$s","url":"%2$s","kind":"custom","className":"%4$s"} /-->';
+		// Reset id to ensure it is only included when explicitly set below.
+		$item['id'] = null;
 
 		// If a term is provided, use the term type link.
 		if ( ! empty( $item['term'] ) ) {
-			$block_code      = '<!-- wp:navigation-link {"label":"%1$s","url":"%2$s","kind":"taxonomy","id":"%3$s","className":"%4$s"} /-->';
 			$item['id']    ??= $item['term']->term_id;
 			$item['url']   ??= get_term_link( $item['term'] );
-			$item['label'] ??= $item['term']->name;
+			$label           = $item['term']->name ?? '';
+			$kind            = 'taxonomy';
 		}
 
 		// If this is a relative link, convert it to absolute and try to find
 		// the corresponding ID, so that the `current` attributes are used.
-		if ( str_starts_with( $item['url'], '/' ) ) {
+		if ( isset( $item['url'] ) && str_starts_with( $item['url'], '/' ) ) {
 			$page_obj    = get_page_by_path( $item['url'] );
 			$item['url'] = home_url( $item['url'] );
 			if ( $page_obj ) {
 				// A page was found, so use the post-type link.
-				$block_code = '<!-- wp:navigation-link {"label":"%1$s","url":"%2$s","kind":"post-type","id":"%3$s","className":"%4$s"} /-->';
+				$kind = 'post-type';
 				$item['id'] = $page_obj->ID;
 			}
 		}
 
-		$output .= sprintf(
-			$block_code,
-			json_escape_label( $item['label'] ),
-			esc_url( $item['url'], ),
-			isset( $item['id'] ) ? intval( $item['id'] ) : '',
-			isset( $item['className'] ) ? esc_attr( $item['className'] ) : '',
-		);
+		$attributes = [
+			'className' => $item['className'] ?? '',
+			'kind'      => $kind,
+			'label'     => wp_kses_post( $label ),
+			'url'       => esc_url_raw( $item['url'] ?? '' ),
+		];
+		// Only include the id attribute if it is explicitly set.
+		if ( ! empty( $item['id'] ) ) {
+			$attributes['id'] = intval( $item['id'] );
+		}
+
+		$output = '<!-- wp:navigation-link ' . serialize_block_attributes( $attributes ) . ' /-->';
 	}
 
 	return $output;
