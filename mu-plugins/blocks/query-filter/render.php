@@ -99,8 +99,8 @@ if ( $selected_count && $has_multiple ) {
 		class="<?php echo esc_attr( implode( ' ', $modal_classes ) ); ?>"
 		id="<?php echo esc_attr( $html_id ); ?>"
 		data-wp-bind--hidden="!context.isOpen"
-		data-wp-watch--focus="effects.focusFirstElement"
-		data-wp-watch--position="effects.checkPosition"
+		data-wp-watch---focus="effects.focusFirstElement"
+		data-wp-watch---position="effects.checkPosition"
 	>
 		<form
 			action="<?php echo esc_attr( $settings['action'] ); ?>"
