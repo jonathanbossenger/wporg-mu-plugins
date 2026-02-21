@@ -182,4 +182,4 @@ $code_is_poetry_src = isset( $attributes['textColor'] ) && str_contains( $attrib
 	<?php endif; ?>
 </div> <!-- /wp:group -->
 
-<?php echo 'The WordPress&reg; trademark is the intellectual property of the WordPress Foundation. <a style="text-decoration: underline;" href="https://wordpress.org/news/2024/09/wp-engine/">WordPress&reg; is not the same thing as WP Engine&reg;</a>. Since October 2024, WordPress.org&rsquo;s creator Matt Mullenweg is a defendant in a legal action from WP Engine&reg;. The <a style="text-decoration: underline;" href="https://wordpress.org/hosting/">WordPress Hosting page</a> does not recommend WP Engine&reg;.';?>
+<?php echo 'The WordPress&reg; trademark is the intellectual property of the WordPress Foundation.';?>
