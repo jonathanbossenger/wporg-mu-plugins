@@ -405,6 +405,12 @@ function render_global_header( $attributes = array() ) {
 		$head_markup = ob_get_clean();
 	}
 
+	// Strip <link rel="alternate"> tags from the head, as they're not relevant for the global header.
+	// This catches tags from core (feed links, oEmbed) and any added by plugins.
+	if ( $is_rest_request ) {
+		$head_markup = remove_head_alternate_links( $head_markup );
+	}
+
 	$wrapper_attributes = get_block_wrapper_attributes(
 		array( 'class' => 'global-header wp-block-group' )
 	);
@@ -415,6 +421,21 @@ function render_global_header( $attributes = array() ) {
 		$markup,
 		wp_kses_post( render_header_alert_banner() )
 	);
+}
+
+/**
+ * Remove `<link rel="alternate" ...>` tags from HTML markup.
+ *
+ * Uses a regex to match and remove `<link>` tags whose `rel` attribute
+ * contains "alternate", regardless of which plugin or core function
+ * added them.
+ *
+ * @param string $markup The HTML markup to filter.
+ *
+ * @return string The markup with alternate link tags removed.
+ */
+function remove_head_alternate_links( $markup ) {
+	return preg_replace( '/<link\b[^>]*\brel=["\'][^"\']*\balternate\b[^"\']*["\'][^>]*\/?>/i', '', $markup );
 }
 
 /**
