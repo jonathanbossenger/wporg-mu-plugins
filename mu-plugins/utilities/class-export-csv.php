@@ -206,6 +206,8 @@ class Export_CSV {
 		$delimiters = array( ',', ';', ':', '|', '^', "\n", "\t", ' ' );
 
 		foreach ( $fields as $index => $field ) {
+			$field = (string) $field;
+
 			// Escape trigger characters at the start of a new field
 			$first_cell_character = mb_substr( $field, 0, 1 );
 			$is_trigger_character = in_array( $first_cell_character, $active_content_triggers, true );
