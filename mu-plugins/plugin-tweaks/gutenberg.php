@@ -11,6 +11,7 @@ add_filter( 'render_block_core/post-title', __NAMESPACE__ . '\swap_h0_for_paragr
 add_filter( 'render_block_core/query-title', __NAMESPACE__ . '\swap_h0_for_paragraph', 20 );
 add_filter( 'wp_script_attributes', __NAMESPACE__ . '\inject_module_cachebuster' );
 add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\fix_rtl_style_includes', 1 );
+add_action( 'init', __NAMESPACE__ . '\wporg_icons_filepath_shim', 9999 );
 
 /**
  * Replace invalid `h0` tags with paragraphs.
